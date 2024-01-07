@@ -19,7 +19,10 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix, classification_report, accuracy_score, f1_score
 import lightgbm as lgb
-gt_x, gt_y = pd.read_csv('./purpose_prediction/data/gt_x.csv'), pd.read_csv('./purpose_prediction/data/gt_y.csv')
+# gt_x, gt_y = pd.read_csv('./purpose_prediction/data/gt_x.csv'), pd.read_csv('./purpose_prediction/data/wd_y.csv')
+gt_x = pd.read_csv('./purpose_prediction/data/gt_x.csv')
+gt_y = pd.read_csv('./purpose_prediction/data/wd_y_3.csv')
+# total_data = pd.read_csv('./purpose_prediction/data/corpus.csv')
 total_data = pd.read_csv('./purpose_prediction/data/corpus.csv')
 
 #gt_x, gt_y = pd.read_csv('./data/gt_x.csv',encoding='utf-8'), pd.read_csv('./data/gt_y.csv',encoding='utf-8')
@@ -99,6 +102,10 @@ def train_model(data,label,transformer,beat_vec,dom_vec):
     X,y = full_feat, label
     y = y.replace('Developer Advertising or Marketing',"Developer's Advertising or Marketing")
     print(y.value_counts())
+
+    print(len(X))
+    print(len(y))
+
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, stratify=y, shuffle=1, random_state=8)
 
     lgbmclf = lgb.LGBMClassifier(colsample_bytree=1.0,
@@ -123,6 +130,7 @@ def evaluate_application(clf, filename, output_filename,beat_vec, transformer, d
     ignore_cols = [x for x in raw_data.columns if x not in cat_cols and x not in bow_cols and x not in num_cols]
 
     cat_feat = raw_data[cat_cols].astype(str)
+    print("cat_feat", cat_feat)
     cat_feat = cat_feat.apply(LabelEncoder().fit_transform)
 
     num_feat = raw_data[num_cols]#.astype(float)
@@ -324,7 +332,7 @@ def load_model(data,label,transformer,beat_vec,dom_vec,model_path):
 
 
 
-def predict_purpose(src='./data/test.csv', dst='./data/test_results.csv', retrain=False):
+def predict_purpose(src='./data/test.csv', dst='./data/test_results.xlsx', retrain=False):
     beat_vec, transformer, dom_vec = fit_vectorizor(bow_feat,dom_feat)
     if retrain:
         lgbmclf= train_model(gt_x,gt_y,transformer,beat_vec,dom_vec)
@@ -335,4 +343,4 @@ def predict_purpose(src='./data/test.csv', dst='./data/test_results.csv', retrai
         bow_feat_dim, dom_feat_dim = evaluate_application(lgbmclf, src, dst,beat_vec, transformer, dom_vec)
 
 
-#predict_purpose()
+# predict_purpose(retrain=False)

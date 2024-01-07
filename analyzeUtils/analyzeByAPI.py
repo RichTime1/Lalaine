@@ -17,13 +17,15 @@ def get_bundle_id(ipa):
 
 
 def get_old_bundle_id(ipa):
-    if "-" in ipa:
-        cells = ipa.split("-")
-        appid = cells[-3]
-        bundle_id = ipa.split(appid)[0][:-1]
-        return bundle_id
-    else:
-        return ipa.split(".txt")[0]
+    # if "-" in ipa:
+    #     cells = ipa.split("-")
+    #     appid = cells[-3]
+    #     bundle_id = ipa.split(appid)[0][:-1]
+    #     return bundle_id
+    # else:
+    #     return ipa.split(".txt")[0]
+
+    return ipa.split(".txt")[0]
 
 
 
@@ -702,6 +704,7 @@ def analyze_one_batch(root,folder,sen_list, target_precise_location, target_coar
         os.makedirs(anlyze_output_path)
 
     frida_list = os.listdir(frida_output_path)
+    print("frida_output_path: " + frida_output_path)
     for f in frida_list:
         if f == ".DS_Store":
             continue
@@ -714,6 +717,7 @@ def analyze_one_batch(root,folder,sen_list, target_precise_location, target_coar
         if "_" in f:
             bundle_id = get_bundle_id(f)
         else:
+            # print(f)
             bundle_id = get_old_bundle_id(f)
 
         app_frida_data = parse_frida_output(frida_file, bundle_id, anlyze_output_path,sen_list)

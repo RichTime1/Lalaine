@@ -45,6 +45,7 @@ def format_network_time(s_time):
 
 
 def get_network_traffic_duration(start_time,end_time,network_file,ipa_network_file):
+    print('start get_network_traffic_duration------')
     with open(network_file, 'r') as f:
         har_parser = HarParser(json.loads(f.read().encode().decode('utf-8-sig') ))
     data = har_parser.har_data
@@ -52,8 +53,12 @@ def get_network_traffic_duration(start_time,end_time,network_file,ipa_network_fi
     for entry in entries:
         if 'startedDateTime' in entry.keys():
             currentDateTime=format_network_time(entry['startedDateTime'])
+            print('start_time', start_time)
+            print('currentDateTime', currentDateTime)
+            print('end_time', end_time)
             if start_time < currentDateTime < end_time:
                 print(str(currentDateTime) + " :: " + entry["request"]["url"])
+                print('start with_json------', ipa_network_file)
                 write_json(entry, ipa_network_file)
 
 
@@ -72,6 +77,7 @@ def get_raw_har(network_path,har_path):
 
 
 def parse_raw_network(root,folder,har_path):
+    print("start parse_raw_network-------")
     log_file = root+'/result/' + str(folder) + '/log.txt'
     network_path = root+'/result/' + str(folder) + "/har/"
     network_output_path = root+'/result/'+ str(folder) + "/network_output/"
@@ -93,6 +99,7 @@ def parse_raw_network(root,folder,har_path):
             if file == ".DS_Store":
                 continue
             network_file = network_path + file
+
             get_network_traffic_duration(start_time, end_time, network_file, ipa_network_file)
             print("========================\n\n")
 

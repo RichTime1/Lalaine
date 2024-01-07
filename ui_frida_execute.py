@@ -84,7 +84,6 @@ async def frida_process(bundleID,ROOT):
     await asyncio.sleep(1)
     with open(ROOT+"/hook_sensitive_api.js","r", encoding = "utf8") as f:
         script = session.create_script(f.read())
-    
     script.on("message",on_message)
     script.load()
     sys.stdin.read()
@@ -120,13 +119,16 @@ def signal_test(bundleID, ROOT,DEVICE_ID,SMOKE_PATH):
     t.start()
 
     asyncio.run(print_process(200))
-
-    try:
-        asyncio.run(frida_process(bundleID,ROOT))
-    except:
-        file_name=ROOT+"/frida_tmp.txt"
-        with open(file_name, 'a+',encoding = "utf8") as f:
-            f.write("[!] frida hooking exception."+ "\n\n")
+    # print('开始暂停5秒，等待Macaca启动apps')
+    # time.sleep(5)
+    # print('暂停结束')
+    asyncio.run(frida_process(bundleID, ROOT))
+    # try:
+    #     asyncio.run(frida_process(bundleID,ROOT))
+    # except:
+    #     file_name=ROOT+"/frida_tmp.txt"
+    #     with open(file_name, 'w',encoding = "utf8") as f:
+    #         f.write("[!] frida hooking exception."+ "\n\n")
 
 
 

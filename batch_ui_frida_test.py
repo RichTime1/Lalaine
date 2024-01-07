@@ -106,8 +106,13 @@ def clean_up():
 
 def write_bundleID_crawler_config(bundleID,SMOKE_PATH):
 	yaml_file =SMOKE_PATH+"demo/crawler.config.yml"
+
 	yaml_info =readyaml(yaml_file)
+	print(yaml_info)
+	print(bundleID)
 	yaml_info['desiredCapabilities']['bundleId']=bundleID
+	print(bundleID)
+	print(yaml_info)
 	writeyaml(yaml_file, yaml_info)
 
 
@@ -276,7 +281,7 @@ if __name__ == "__main__":
 
 
 		flag=test_one_batch(app_input_path,bundleID,ipa,DEVICE_ID,SMOKE_PATH)
-		
+		# flag = True
 		if flag:
 			end_time=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -311,5 +316,17 @@ if __name__ == "__main__":
 		else:
 			with open(error_log, 'a+') as f:
 				f.write(bundleID + " :: install failed...")
+
+		wd_end_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+		with open("wd/startTimes/wd_test_time.txt", "a", encoding="utf-8") as f:
+			f.writelines(str(start_time))
+			f.writelines("\n")
+			f.writelines(ipa)
+			f.writelines("\n")
+			f.writelines(str(wd_end_time))
+			f.writelines("\n")
+			f.writelines("----------------")
+			f.writelines("\n")
 
 		

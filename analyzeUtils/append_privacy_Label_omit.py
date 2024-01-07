@@ -218,9 +218,9 @@ def append_privacy_Label_omit(total_file,out_putfile):
 
     norepeat_omit_df = omit_df.drop_duplicates(subset=['bundle_id_list'], keep='first')
     norepeat_df = df.drop_duplicates(subset=['bundle_id_list'], keep='first')
-    print(len(norepeat_omit_df))
-    print(len(norepeat_df))
-    print(len(norepeat_omit_df)/len(norepeat_df))
+    # print(len(norepeat_omit_df))
+    # print(len(norepeat_df))
+    # print(len(norepeat_omit_df)/len(norepeat_df))
 
     #omit_df.to_excel()
     writer = pd.ExcelWriter(out_putfile, engine='xlsxwriter', options={'strings_to_urls': False})

@@ -42,10 +42,11 @@ def get_old_bundle_id(ipa):
 
 
 def get_bundle_id(ipa):
-    cells = ipa.split("_")
+    # cells = ipa.split("_")
     #appid = cells[-1]
     #bundle_id = ipa.split(appid)[0][:-1]
-    bundle_id = ipa.split("_")[0]
+    # bundle_id = ipa.split("_")[0]
+    bundle_id = ipa.replace(".ipa", "")
     return bundle_id
 
 

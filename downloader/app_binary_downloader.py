@@ -13,7 +13,7 @@ def is_exist(ipa_path,bundleid):
     with open("./downloaded.txt", 'r') as f:
         bundleids = f.read().splitlines()
     for item in bundleids:
-        b_id =item.strip()
+        b_id = item.strip()
         if b_id == bundleid.strip():
             print("exist!!!! skip the bundleid ....")
             return True
